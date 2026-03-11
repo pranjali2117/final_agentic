@@ -1,0 +1,6 @@
+crewai
+langchain_community
+langchain_ollama
+streamlit
+crewai_tool
+groq
