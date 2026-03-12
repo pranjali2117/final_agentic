@@ -1,6 +1,8 @@
 crewai
-langchain_community
-langchain_ollama
+langchain-community
+langchain-ollama
 streamlit
-crewai_tool
+crewai-tools
 groq
+tavily-python
+litellm

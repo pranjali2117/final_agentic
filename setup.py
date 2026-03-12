@@ -1,9 +1,6 @@
 import sys
 import os
 
-# Essential Environment Keys
-os.environ["OPENAI_API_KEY"] = "NA" # Bypasses the OpenAI check for local Ollama
-os.environ["SERPER_API_KEY"] = "149f0c461e76532683a2017c7f9231ff1c3b4580"
 
 from crewai import Crew, Process
 from agents import planner_agent, analyst_agent

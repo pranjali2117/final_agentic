@@ -1,12 +1,13 @@
 from crewai import Agent, LLM
-from crewai_tools import SerperDevTool
+from crewai_tools import TavilySearchTool
 from sports_analysis import check_resource
 import os
 print(os.getenv("GROQ_API_KEY"))
-search_tool = SerperDevTool(search_kwargs={"num": 3})
+search_tool = TavilySearchTool()
+search_tool.name = "tavily_search"
 
 local_llm = LLM(
-    model="groq/llama-3.1-8b-instant",
+    model="groq/llama-3.1-8b-instant", # Switched to a lighter model to avoid TPM rate limits
     temperature=0.3
 )
 
