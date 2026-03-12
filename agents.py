@@ -7,7 +7,7 @@ search_tool = TavilySearchTool()
 search_tool.name = "tavily_search"
 
 local_llm = LLM(
-    model="groq/llama-3.1-8b-instant", # Switched to a lighter model to avoid TPM rate limits
+    model="groq/llama-3.3-70b-versatile", # Switched to a lighter model to avoid TPM rate limits
     temperature=0.3
 )
 
@@ -40,4 +40,5 @@ reporter_agent = Agent(
     llm=local_llm,
     allow_delegation=False,
     verbose=True
+
 )
