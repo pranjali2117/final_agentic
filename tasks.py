@@ -5,11 +5,11 @@ def create_tasks(planner, analyst, reporter):
     
 # Task 1: Research and Plan
     research_task = Task(
-        description="""1. Use the tavily_search tool to find the latest live score and match 
-        summary for {goal}.
+        description="""1. Use the 'tavily_search' tool to find the latest live score and match 
+        summary for {goal}. DO NOT use any other tool names.
         2. Identify the ACTUAL WINNER and ACTUAL LOSER team names.
-        3. Extract top 2 performers from BOTH teams. You MUST include their REAL NAMES and specific stats (e.g., Virat Kohli: 82 runs, Pathum Nissanka: 75 runs).
-        4. Analyze the CRITICAL REASONS for the result (e.g., turning points, player mistakes, or strategy brilliance).
+        3. Extract top 2 performers from BOTH teams with REAL NAMES and specific stats.
+        4. Analyze the CRITICAL REASONS for the result.
         Note: The current real-world time is {current_time}.""",
         expected_output="""A detailed raw data report containing:
         - Actual team names and final scores.
@@ -42,4 +42,4 @@ def create_tasks(planner, analyst, reporter):
         context=[research_task, validation_task]
     )
 
-    return [research_task, validation_task, reporting_task]
+    return [research_task, validation_task, reporting_task]
