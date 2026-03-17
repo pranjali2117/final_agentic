@@ -76,22 +76,31 @@ def apply_custom_css():
     """, unsafe_allow_html=True)
 
 def navbar():
-    cols = st.columns([6, 1, 1, 1])
-    with cols[0]:
-        st.markdown(f"### 🏏 Sportlytics")
-    if st.session_state.logged_in:
-        with cols[1]:
-            if st.button("Home", key="nav_home"): st.session_state.page = "Home"; st.rerun()
-        with cols[2]:
-            if st.button("History", key="nav_history"): st.session_state.page = "History"; st.rerun()
-        with cols[3]:
-            if st.button("Logout", key="nav_logout"):
+    with st.sidebar:
+        st.markdown("## 🏏 Sportlytics")
+
+        if st.session_state.logged_in:
+
+            if st.button("🏠 Home"):
+                st.session_state.page = "Home"
+                st.rerun()
+
+            if st.button("📂 History"):
+                st.session_state.page = "History"
+                st.rerun()
+
+            if st.button("🚪 Login"):
                 st.session_state.logged_in = False
                 st.session_state.user = None
                 st.session_state.page = "Login"
                 st.rerun()
-    else:
-        with cols[2]:
-            if st.button("Login", key="nav_login"): st.session_state.page = "Login"; st.rerun()
-        with cols[3]:
-            if st.button("Signup", key="nav_signup"): st.session_state.page = "Signup"; st.rerun()
+
+        else:
+
+            if st.button("🔐 Login"):
+                st.session_state.page = "Login"
+                st.rerun()
+
+            if st.button("📝 Signup"):
+                st.session_state.page = "Signup"
+                st.rerun()

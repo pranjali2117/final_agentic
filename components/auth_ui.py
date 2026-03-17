@@ -11,22 +11,43 @@ def validate_password(password):
         return False, "Password must contain at least one special character."
     return True, ""
 
+
 def login_page():
     st.markdown('<div class="auth-container">', unsafe_allow_html=True)
+
     with st.container():
         st.markdown('<div class="auth-card">', unsafe_allow_html=True)
+
+        # Title
         st.title("🏏 Sportlytics")
-        st.markdown("<p style='text-align: center; color: #aaa;'>Login to your account</p>", unsafe_allow_html=True)
-        
-        email = st.text_input("Email", placeholder="your@email.com")
-        password = st.text_input("Password", type="password", placeholder="••••••••")
-        
+        st.markdown(
+            "<p style='text-align:center;color:#aaa;'>Login to continue your sports analysis</p>",
+            unsafe_allow_html=True
+        )
+
         st.markdown("<br>", unsafe_allow_html=True)
-        if st.button("Login", key="login_btn"):
+
+        # Input fields
+        email = st.text_input(
+            "Email",
+            placeholder="your@email.com"
+        )
+
+        password = st.text_input(
+            "Password",
+            type="password",
+            placeholder="Enter your password"
+        )
+
+        st.markdown("<br>", unsafe_allow_html=True)
+
+        # Login button
+        if st.button("🔐 Login"):
             if not email or not password:
                 st.error("Please fill in all fields.")
             else:
                 user = check_user(email, password)
+
                 if user:
                     st.session_state.logged_in = True
                     st.session_state.user = user
@@ -34,17 +55,26 @@ def login_page():
                     st.rerun()
                 else:
                     st.error("Invalid email or password.")
-        
-        st.markdown('<div class="primary-button">', unsafe_allow_html=True)
-        if st.button("Create new account", key="goto_signup"):
-            st.session_state.page = "Signup"
-            st.rerun()
-        if st.button("Forgot Password?", key="goto_forgot"):
-            st.session_state.page = "Forgot"
-            st.rerun()
+
+        st.markdown("<hr style='margin:25px 0'>", unsafe_allow_html=True)
+
+        # Navigation buttons
+        col1, col2 = st.columns(2)
+
+        with col1:
+            if st.button("📝 Signup"):
+                st.session_state.page = "Signup"
+                st.rerun()
+
+        with col2:
+            if st.button("🔄 Forgot Password"):
+                st.session_state.page = "Forgot"
+                st.rerun()
+
         st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+
     st.markdown('</div>', unsafe_allow_html=True)
+
 
 def signup_page():
     st.markdown('<div class="auth-container">', unsafe_allow_html=True)
