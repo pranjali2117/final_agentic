@@ -6,8 +6,24 @@ import os
 DB_NAME = os.environ.get("DB_PATH", "sportlytics.db")
 
 def init_db():
-    conn = sqlite3.connect(DB_NAME)
-    cursor = conn.cursor()
+    # Ensure the parent directory exists
+    db_dir = os.path.dirname(os.path.abspath(DB_NAME))
+    if db_dir and not os.path.exists(db_dir):
+        try:
+            os.makedirs(db_dir, exist_ok=True)
+            print(f"Created database directory: {db_dir}")
+        except Exception as e:
+            print(f"Error creating directory {db_dir}: {e}")
+
+    # Print diagnostics for debugging
+    print(f"Connecting to database: {DB_NAME}")
+    print(f"Effective user ID: {os.getuid()}")
+    if os.path.exists(db_dir):
+        print(f"Directory {db_dir} permissions: {oct(os.stat(db_dir).st_mode)}")
+    
+    try:
+        conn = sqlite3.connect(DB_NAME)
+        cursor = conn.cursor()
     
     # Users table
     cursor.execute("""

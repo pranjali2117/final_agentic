@@ -34,6 +34,9 @@ RUN pip install --no-cache /wheels/*
 # Copy application code
 COPY . .
 
+# Ensure data directory exists
+RUN mkdir -p /app/data
+
 # Change ownership to non-root user
 RUN chown -R appuser:appgroup /app
 
