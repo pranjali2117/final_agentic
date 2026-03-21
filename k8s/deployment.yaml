@@ -32,6 +32,15 @@ spec:
         fsGroup: 1000
         runAsUser: 1000
         runAsGroup: 1000
+      initContainers:
+      - name: fix-permissions
+        image: busybox
+        command: ["sh", "-c", "chown -R 1000:1000 /app/data"]
+        securityContext:
+          runAsUser: 0
+        volumeMounts:
+        - name: db-data
+          mountPath: /app/data
       containers:
       - name: sportlytics
         image: ghcr.io/pranjali2117/final_agentic:latest
