@@ -2,7 +2,8 @@ import sqlite3
 import hashlib
 import os
 
-DB_NAME = "sportlytics.db"
+# Grab DB_PATH from environment (used by K8s PVC) or fallback to local repo directory
+DB_NAME = os.environ.get("DB_PATH", "sportlytics.db")
 
 def init_db():
     conn = sqlite3.connect(DB_NAME)

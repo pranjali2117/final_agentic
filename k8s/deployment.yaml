@@ -1,3 +1,15 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sportlytics-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -5,7 +17,9 @@ metadata:
   labels:
     app: sportlytics
 spec:
-  replicas: 2
+  replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: sportlytics
@@ -16,10 +30,12 @@ spec:
     spec:
       containers:
       - name: sportlytics
-        image: <YOUR_AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/sportlytics:latest
+        image: ghcr.io/pranjali2117/final_agentic:latest
         ports:
         - containerPort: 8501
         env:
+        - name: DB_PATH
+          value: "/app/data/sportlytics.db"
         - name: GROQ_API_KEY
           valueFrom:
             secretKeyRef:
@@ -30,6 +46,13 @@ spec:
             secretKeyRef:
               name: sportlytics-secrets
               key: TAVILY_API_KEY
+        volumeMounts:
+        - name: db-data
+          mountPath: /app/data
+      volumes:
+      - name: db-data
+        persistentVolumeClaim:
+          claimName: sportlytics-pvc
 ---
 apiVersion: v1
 kind: Service

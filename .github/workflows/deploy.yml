@@ -1,4 +1,4 @@
-name: Deploy to AWS EKS
+name: Deploy to K3s
 
 on:
   push:
@@ -6,36 +6,44 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-
-      - name: Build, Tag, and Push Image to ECR
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: sportlytics
-          IMAGE_TAG: latest
+      - name: Build and Push Docker Image
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          # Make sure to strictly use lowercase to avoid docker parsing errors
+          docker build -t ghcr.io/pranjali2117/final_agentic:latest .
+          docker push ghcr.io/pranjali2117/final_agentic:latest
 
-      - name: Update Kubeconfig
-        run: aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }} --region ${{ secrets.AWS_REGION }}
+      - name: Copy K8s manifests to Server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          source: "k8s/deployment.yaml"
+          target: "~/"
 
-      - name: Deploy to Kubernetes
-        run: |
-          kubectl apply -f k8s/deployment.yaml
-          kubectl rollout restart deployment/sportlytics-deployment
+      - name: Deploy to K3s Server via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            sudo k3s kubectl apply -f ~/k8s/deployment.yaml
+            sudo k3s kubectl rollout restart deployment/sportlytics-deployment
