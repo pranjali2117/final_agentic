@@ -1,9 +1,10 @@
-venv
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
 .env
-__pycache__
-*.pyc
-.git
-.github
 sportlytics.db
-*.md
-docker-compose.yml
+.git/
+.github/
+.gitignore
+README.md
