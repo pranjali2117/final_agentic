@@ -7,7 +7,7 @@ from crewai import Crew, Process
 # ---------------- HOME PAGE ---------------- #
 def home_page(st_user, create_tasks_fn, planner_agent, analyst_agent, reporter_agent):
 
-    st.title("🏟️ Sportlytics AI")
+    st.title("🏟️ Sports Planning Analyst")
     st.caption(f"Welcome 👋")
 
     st.markdown(
