@@ -23,8 +23,8 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-# Create a non-root user with deterministic IDs for Kubernetes
-RUN groupadd --system --gid 1000 appgroup && useradd --system --uid 1000 --gid 1000 appuser
+# Create a non-root user with deterministic IDs for Kubernetes and a physical home directory
+RUN groupadd --system --gid 1000 appgroup && useradd --system --uid 1000 --gid 1000 -m appuser
 
 # Copy wheels from builder and install
 COPY --from=builder /app/wheels /wheels
