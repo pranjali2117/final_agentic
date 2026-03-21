@@ -21,9 +21,8 @@ def init_db():
     if os.path.exists(db_dir):
         print(f"Directory {db_dir} permissions: {oct(os.stat(db_dir).st_mode)}")
     
-    try:
-        conn = sqlite3.connect(DB_NAME)
-        cursor = conn.cursor()
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
     
     # Users table
     cursor.execute("""
