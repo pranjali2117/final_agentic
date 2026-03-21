@@ -28,6 +28,10 @@ spec:
       labels:
         app: sportlytics
     spec:
+      securityContext:
+        fsGroup: 1000
+        runAsUser: 1000
+        runAsGroup: 1000
       containers:
       - name: sportlytics
         image: ghcr.io/pranjali2117/final_agentic:latest
