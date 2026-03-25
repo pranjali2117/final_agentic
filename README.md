@@ -1,4 +1,16 @@
+---
+title: Sportlytics
+emoji: 🏏
+colorFrom: indigo
+colorTo: blue
+sdk: streamlit
+sdk_version: 1.31.1
+app_file: app.py
+pinned: false
+---
+
 # 🏏 Sportlytics - AI Sports Analysis Assistant
+
 
 Sportlytics is a premium, multi-agent AI application designed to provide deep, real-time sports analysis. Using specialized AI agents, it researches live match data, analyzes performance stats of teams and players, and generates professional executive reports.
 
